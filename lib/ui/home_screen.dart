@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: 5,
         itemBuilder: (context, index) {
           return ListTile(
-            leading: Icon(Icons.cake_outlined),
+            leading: Icon(Icons.cake_outlined,size: 30,color: Colors.blue,),
             title: Text(
               "This is cake",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
