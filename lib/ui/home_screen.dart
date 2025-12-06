@@ -38,31 +38,22 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         centerTitle: false,
-        title: const Text('Food Recipes'),
+        title: Text('Food Recipes'),
       ),
-      body: _recipes.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: _recipes.length,
-              itemBuilder: (context, index) {
-                final recipe = _recipes[index];
-                return ListTile(
-                  leading: const Icon(
-                    Icons.cake_outlined,
-                    size: 30,
-                    color: Colors.blue,
-                  ),
-                  title: Text(
-                    recipe.title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  subtitle: Text(recipe.description),
-                );
-              },
+      body: ListView.builder(
+        itemCount: _recipes.length,
+        itemBuilder: (context, index) {
+          final recipe = _recipes[index];
+          return ListTile(
+            leading: Icon(Icons.cake_outlined, size: 30, color: Colors.blue),
+            title: Text(
+              recipe.title,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
+            subtitle: Text(recipe.description),
+          );
+        },
+      ),
     );
   }
 }
