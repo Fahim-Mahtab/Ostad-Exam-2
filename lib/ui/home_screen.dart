@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../data/recepie_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,6 +12,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Recipe> _recipes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRecipes();
+  }
+
+  Future<void> _loadRecipes() async {
+    final String response = await rootBundle.loadString(
+      'assets/food_recipes.json',
+    );
+    final data = await json.decode(response);
+    setState(() {
+      _recipes = (data['recipes'] as List)
+          .map((data) => Recipe.fromJson(data))
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,19 +40,29 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: false,
         title: const Text('Food Recipes'),
       ),
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: Icon(Icons.cake_outlined,size: 30,color: Colors.blue,),
-            title: Text(
-              "This is cake",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+      body: _recipes.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: _recipes.length,
+              itemBuilder: (context, index) {
+                final recipe = _recipes[index];
+                return ListTile(
+                  leading: const Icon(
+                    Icons.cake_outlined,
+                    size: 30,
+                    color: Colors.blue,
+                  ),
+                  title: Text(
+                    recipe.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  subtitle: Text(recipe.description),
+                );
+              },
             ),
-            subtitle: Text("this is description"),
-          );
-        },
-      ),
     );
   }
 }
